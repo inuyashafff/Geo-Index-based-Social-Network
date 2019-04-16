@@ -40,7 +40,7 @@ const (
 	TYPE        = "post"
 	DISTANCE    = "200km"
 	ES_URL      = "http://34.73.121.43:9200"
-	BUCKET_NAME = "post-images-inuyashafff"
+	BUCKET_NAME = "post-images-moquan-chenfan"
 	PROJECT_ID  = "master-clock-206503"
 	BT_INSTANCE = "around-post"
 	API_PREFIX  = "/api/v1"
