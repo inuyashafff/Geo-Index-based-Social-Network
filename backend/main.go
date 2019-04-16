@@ -16,7 +16,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"cloud.google.com/go/bigtable"
+	//"cloud.google.com/go/bigtable"
 	//"os"
 	"path/filepath"
 )
