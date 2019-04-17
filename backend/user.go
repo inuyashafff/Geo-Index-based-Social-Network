@@ -9,6 +9,8 @@ import (
       "reflect"
       "regexp"
       "time"
+      //"io/ioutil"
+      //"log"
 
       "github.com/dgrijalva/jwt-go"
 )
@@ -32,8 +34,9 @@ type User struct {
 func checkUser(username, password string) bool {
      es_client, err := elastic.NewClient(elastic.SetURL(ES_URL), elastic.SetSniff(false))
      if err != nil {
-     	fmt.Printf("ES is not setup %v\n", err)
-	panic(err)
+     	 fmt.Printf("ES is not setup %v\n", err)
+	     panic(err)
+       return false
      }
 
      //Search with a term query
@@ -45,7 +48,8 @@ func checkUser(username, password string) bool {
 		  Do()
      if err != nil {
      	fmt.Printf("ES query failed %v\n", err)
-	panic(err)
+	     panic(err)
+       return false
      }
 
      var tyu User
@@ -98,27 +102,41 @@ func addUser(user User) bool {
 
 // if signup is successful, a new session is created
 func signupHandler(w http.ResponseWriter, r *http.Request) {
-     fmt.Println("Received pn signup request")
+    fmt.Println("Received one signup request")
 
-     decoder := json.NewDecoder(r.Body)
-     var u User
-     if err := decoder.Decode(&u); err != nil {
-     	panic(err)
-     }
 
-     if u.Username != "" && u.Password != "" && usernamePattern(u.Username) {
-     	if addUser(u) {
-	   fmt.Println("User added successfully.")
-	   w.Write([]byte("User added successfully"))
-	} else {
-	   fmt.Println("failed to add a new User.")
-	   http.Error(w, "failed to add a new User", http.StatusInternalServerError)
-        }
-     } else {
-       	 fmt.Println("Empty password or username or invalid username.")
-	 http.Error(w, "Empty password or username or invalid username.", http.StatusInternalServerError)
+    // body, err := ioutil.ReadAll(r.Body)
+    // if err != nil {
+    //     panic(err)
+    // }
 
-     }
+
+    // var u User
+    // err = json.Unmarshal(body, &u)
+    // if err != nil {
+    //   panic(err)
+    //   return
+    // }
+
+      decoder := json.NewDecoder(r.Body)
+      var u User
+      if err := decoder.Decode(&u); err != nil {
+             panic(err)
+             return
+      }
+
+    if u.Username != "" && u.Password != "" && usernamePattern(u.Username) {
+      if addUser(u) {
+        fmt.Println("User added successfully.")
+        w.Write([]byte("User added successfully"))
+      } else {
+        fmt.Println("failed to add a new User.")
+        http.Error(w, "failed to add a new User", http.StatusInternalServerError)
+      }
+    } else {
+      fmt.Println("Empty password or username or invalid username.")
+      http.Error(w, "Empty password or username or invalid username.", http.StatusInternalServerError)
+    }
 
      w.Header().Set("Content-Type", "text/plain")
      w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -130,6 +148,23 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 // If login is successful, a new token is created.
 func loginHandler(w http.ResponseWriter, r *http.Request) {
       fmt.Println("Received one login request")
+
+      // body, err := ioutil.ReadAll(r.Body)
+      // if err != nil {
+      //   panic(err)
+      //   return
+      // }
+
+      // var u User
+      // err = json.Unmarshal(body, &u)
+      // if err != nil {
+      //   panic(err)
+      //   return
+      // }
+
+
+
+
 
       decoder := json.NewDecoder(r.Body)
       var u User
