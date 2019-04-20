@@ -150,6 +150,9 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 // If login is successful, a new token is created.
 func loginHandler(w http.ResponseWriter, r *http.Request) {
       fmt.Println("Received one login request")
+      w.Header().Set("Content-Type", "text/plain")
+      w.Header().Set("Access-Control-Allow-Origin", "*")
+      w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization")
 
       // body, err := ioutil.ReadAll(r.Body)
       // if err != nil {
@@ -192,9 +195,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
              http.Error(w, "Invalid password or username", http.StatusForbidden)
       }
 
-      w.Header().Set("Content-Type", "text/plain")
-      w.Header().Set("Access-Control-Allow-Origin", "*")
-      w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization")
+
 
 }
 
