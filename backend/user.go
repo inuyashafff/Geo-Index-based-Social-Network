@@ -103,7 +103,9 @@ func addUser(user User) bool {
 // if signup is successful, a new session is created
 func signupHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Received one signup request")
-
+    w.Header().Set("Content-Type", "text/plain")
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization")
 
     // body, err := ioutil.ReadAll(r.Body)
     // if err != nil {
@@ -138,8 +140,8 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
       http.Error(w, "Empty password or username or invalid username.", http.StatusInternalServerError)
     }
 
-     w.Header().Set("Content-Type", "text/plain")
-     w.Header().Set("Access-Control-Allow-Origin", "*")
+
+
      
 } 
 
@@ -192,5 +194,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
       w.Header().Set("Content-Type", "text/plain")
       w.Header().Set("Access-Control-Allow-Origin", "*")
+      w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization")
+
 }
 
