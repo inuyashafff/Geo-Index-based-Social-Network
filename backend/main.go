@@ -5,8 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	jwtmiddleware "github.com/auth0/go-jwt-middleware"
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/auth0/go-jwt-middleware"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/pborman/uuid"
 	elastic "gopkg.in/olivere/elastic.v3"
@@ -47,7 +47,7 @@ const (
 	API_PREFIX  = "/api/v1"
 )
 
-var mySigningKey = []byte("secretinuyashafff")
+var mySigningKey = []byte("secret")
 
 var (
 	mediaTypes = map[string]string{
@@ -108,10 +108,10 @@ func main() {
 		SigningMethod: jwt.SigningMethodHS256,
 	})
 
-	r.Handle(API_PREFIX+"/post", jwtMiddleware.Handler(http.HandlerFunc(handlerPost)))
-	r.Handle(API_PREFIX+"/search", jwtMiddleware.Handler(http.HandlerFunc(handlerSearch)))
-	r.Handle(API_PREFIX+"/login", http.HandlerFunc(loginHandler))
-	r.Handle(API_PREFIX+"/signup", http.HandlerFunc(signupHandler))
+	r.Handle(API_PREFIX+"/post", jwtMiddleware.Handler(http.HandlerFunc(handlerPost))).Methods("POST")
+	r.Handle(API_PREFIX+"/search", jwtMiddleware.Handler(http.HandlerFunc(handlerSearch))).Methods("GET")
+	r.Handle(API_PREFIX+"/login", http.HandlerFunc(loginHandler)).Methods("POST")
+	r.Handle(API_PREFIX+"/signup", http.HandlerFunc(signupHandler)).Methods("POST")
 	r.Handle(API_PREFIX+"/cluster", jwtMiddleware.Handler(http.HandlerFunc(handlerCluster)))
 
 	http.Handle(API_PREFIX+"/", r)
