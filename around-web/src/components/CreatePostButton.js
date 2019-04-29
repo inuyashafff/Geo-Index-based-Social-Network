@@ -17,6 +17,10 @@ export class CreatePostButton extends React.Component {
    });
  }
 
+
+
+
+
  handleOk = () => {
    // collect values
    this.form.validateFields((err, values) => {
@@ -28,17 +32,28 @@ export class CreatePostButton extends React.Component {
        formData.set('lon', lon + Math.random() * LOC_SHAKE * 2 - LOC_SHAKE);
        formData.set('message', values.message);
        formData.set('image', values.image[0].originFileObj);
+       const token = localStorage.getItem(TOKEN_KEY);
        this.setState({ confirmLoading: true });
+
+
+       // var request = new XMLHttpRequest();
+       // request.open('POST', `${API_ROOT}/post`,  async =  false);
+       // request.setRequestHeader('Authorization', `${AUTH_PREFIX} ${token}`);
+
+       // request.send(formData);
+       // console.log(request.response);
+
        $.ajax({
          url: `${API_ROOT}/post`,
-         method: 'POST',
          data: formData,
-         headers: {
-           Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`,
-         },
+         type: 'POST',
          processData: false,
          contentType: false,
+         // headers: {
+         //   Authorization: `${AUTH_PREFIX} ${token}`,
+         // },
          dataType: 'text',
+
        }).then(() => {
          message.success('Create post succeed!');
          this.form.resetFields();

@@ -105,6 +105,7 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Received one signup request")
     w.Header().Set("Content-Type", "text/plain")
     w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization")
 
     // body, err := ioutil.ReadAll(r.Body)
     // if err != nil {

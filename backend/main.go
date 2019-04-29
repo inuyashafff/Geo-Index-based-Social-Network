@@ -5,8 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/auth0/go-jwt-middleware"
-	"github.com/dgrijalva/jwt-go"
+	jwtmiddleware "github.com/auth0/go-jwt-middleware"
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/pborman/uuid"
 	elastic "gopkg.in/olivere/elastic.v3"
@@ -108,10 +108,10 @@ func main() {
 		SigningMethod: jwt.SigningMethodHS256,
 	})
 
-	r.Handle(API_PREFIX+"/post", jwtMiddleware.Handler(http.HandlerFunc(handlerPost))).Methods("POST")
-	r.Handle(API_PREFIX+"/search", jwtMiddleware.Handler(http.HandlerFunc(handlerSearch))).Methods("GET")
-	r.Handle(API_PREFIX+"/login", http.HandlerFunc(loginHandler)).Methods("POST")
-	r.Handle(API_PREFIX+"/signup", http.HandlerFunc(signupHandler)).Methods("POST")
+	r.Handle(API_PREFIX+"/post", http.HandlerFunc(handlerPost))
+	r.Handle(API_PREFIX+"/search", jwtMiddleware.Handler(http.HandlerFunc(handlerSearch)))
+	r.Handle(API_PREFIX+"/login", http.HandlerFunc(loginHandler))
+	r.Handle(API_PREFIX+"/signup", http.HandlerFunc(signupHandler))
 	r.Handle(API_PREFIX+"/cluster", jwtMiddleware.Handler(http.HandlerFunc(handlerCluster)))
 
 	http.Handle(API_PREFIX+"/", r)
@@ -130,9 +130,10 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization")
 
-	user := r.Context().Value("user")
-	claims := user.(*jwt.Token).Claims
-	username := claims.(jwt.MapClaims)["username"]
+
+	// user := r.Context().Value("user")
+	// claims := user.(*jwt.Token).Claims
+	// username := claims.(jwt.MapClaims)["username"]
 
 	r.ParseMultipartForm(32 << 20)
 
@@ -142,7 +143,7 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
 	lon, _ := strconv.ParseFloat(r.FormValue("lon"), 64)
 
 	p := &Post{
-		User:    username.(string),
+		//User:    username.(string),
 		Message: r.FormValue("message"),
 		Location: Location{
 			Lat: lat,
