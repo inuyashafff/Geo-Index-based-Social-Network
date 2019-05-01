@@ -41,7 +41,7 @@ export class AroundMarker extends React.Component {
                :
                <video src={url} className="around-marker-video" controls/>
            }
-           <p>{`${user}: ${message}`}</p>
+           <p>{`${user} ${message}`}</p>
          </div>
        </InfoWindow>) : null}
      </Marker>
