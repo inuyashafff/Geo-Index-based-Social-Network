@@ -35,11 +35,11 @@ type MlRequest struct {
 }
 
 var (
-  // TODO: Replace this project ID and model name with your configuration.
-  project = "around0225"
-  model   = "face_zzy"
-  url     = "https://ml.googleapis.com/v1/projects/" + project + "/models/" + model + ":predict"
-  scope   = "https://www.googleapis.com/auth/cloud-platform"
+  // TODO: Replace this project name and model name with your configuration.
+  project = "master-clock-206503"
+  model = "face"
+  url   = "https://ml.googleapis.com/v1/projects/" + project + "/models/" + model + ":predict"
+  scope = "https://www.googleapis.com/auth/cloud-platform"
 )
 
 // Annotate a image file based on ml model, return score and error if exists.
